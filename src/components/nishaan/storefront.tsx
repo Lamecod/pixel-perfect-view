@@ -5,6 +5,7 @@ import { ArrowDown, ArrowLeft, ArrowRight, Check, Instagram, MessageCircle, Minu
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { designCategories, tattooDesigns, type TattooDesign } from "@/lib/nishaan-catalog";
 import { createWhatsAppOrderUrl, type WhatsAppOrderLine } from "@/lib/whatsapp-order";
 
@@ -290,15 +291,15 @@ export function NishaanStorefront() {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={cartOpen} onOpenChange={setCartOpen}>
-        <DialogContent className="cart-dialog">
-          <DialogHeader className="cart-dialog-header"><DialogTitle>Your bag<span>{cartCount}</span></DialogTitle><DialogDescription>Your picks are kept here while you browse.</DialogDescription></DialogHeader>
+      <Sheet open={cartOpen} onOpenChange={setCartOpen}>
+        <SheetContent side="right" className="cart-dialog">
+          <SheetHeader className="cart-dialog-header"><SheetTitle>Your bag<span>{cartCount}</span></SheetTitle><SheetDescription>Your picks are kept here while you browse.</SheetDescription></SheetHeader>
           {orderLines.length > 0 ? <>
             <div className="cart-items">{orderLines.map(({ design, quantity }) => <article className="cart-item" key={design.id}><button className="cart-item-art" onClick={() => { setCartOpen(false); showDetails(design); }} aria-label={`View ${design.name}`}><img src={design.image} alt="" /></button><div className="cart-item-copy"><button className="cart-item-name" onClick={() => { setCartOpen(false); showDetails(design); }}>{design.name}</button><span>Ask us for the price</span><QuantityControl quantity={quantity} label={design.name} onDecrease={() => setDesignQuantity(design.id, quantity - 1)} onIncrease={() => setDesignQuantity(design.id, quantity + 1)} /></div><Button variant="ghost" size="icon" className="cart-remove" aria-label={`Remove ${design.name} from bag`} onClick={() => setDesignQuantity(design.id, 0)}><X aria-hidden="true" /></Button></article>)}</div>
             <div className="cart-summary"><span>Price confirmed by Nishaan on WhatsApp</span><p>Send your picks to ask about availability and price.</p><Button asChild variant="default" size="lg"><a href={createWhatsAppOrderUrl(orderLines)} target="_blank" rel="noreferrer"><MessageCircle aria-hidden="true" /> Ask about these designs</a></Button></div>
           </> : <div className="empty-bag"><div className="empty-bag-icon"><ShoppingBag aria-hidden="true" /></div><p className="eyebrow">YOUR BAG IS WAITING</p><h3>A design could go here.</h3><p>Browse the collection and add the ones that feel like yours.</p><Button variant="outline" onClick={() => { setCartOpen(false); document.querySelector("#shop")?.scrollIntoView({ behavior: "smooth" }); }}>Explore the collection <ArrowDown aria-hidden="true" /></Button></div>}
-        </DialogContent>
-      </Dialog>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
