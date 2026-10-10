@@ -1,0 +1,2 @@
+- [ ] Finish the Nishaan storefront review, verify WhatsApp ordering, mobile layout, and route metadata, then check current build diagnostics.
+- [ ] Rename the single-design WhatsApp action to “Order now” in the product detail view.

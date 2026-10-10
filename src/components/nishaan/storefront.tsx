@@ -42,7 +42,7 @@ function QuantityControl({
   );
 }
 
-function SiteHeader({ cartCount, onOpenCart }: { cartCount: number; onOpenCart: () => void }) {
+function SiteHeader({ cartCount, onOpenCart }: { cartCount: number; onOpenCart?: () => void }) {
   return (
     <>
       <div className="announcement-bar">
@@ -58,19 +58,19 @@ function SiteHeader({ cartCount, onOpenCart }: { cartCount: number; onOpenCart: 
             <small>WEAR WHAT MATTERS.</small>
           </Link>
           <nav className="desktop-nav" aria-label="Main navigation">
-            <Link to="/#shop">Shop</Link>
+            <Link to="/" hash="shop">Shop</Link>
             <Link to="/about">The story</Link>
             <Link to="/faq">Questions</Link>
             <Link to="/contact">Contact</Link>
           </nav>
-          <Button variant="outline" size="sm" className="cart-trigger" onClick={onOpenCart} aria-label={`Open your bag, ${cartCount} items`}>
+          {onOpenCart && <Button variant="outline" size="sm" className="cart-trigger" onClick={onOpenCart} aria-label={`Open your bag, ${cartCount} items`}>
             <ShoppingBag aria-hidden="true" />
             <span className="cart-label">Bag</span>
             <span className="cart-count" aria-live="polite">{cartCount}</span>
-          </Button>
+          </Button>}
         </div>
         <nav className="mobile-nav" aria-label="Mobile navigation">
-          <Link to="/#shop">Shop</Link>
+          <Link to="/" hash="shop">Shop</Link>
           <Link to="/about">Story</Link>
           <Link to="/faq">FAQ</Link>
           <Link to="/contact">Contact</Link>
@@ -281,7 +281,7 @@ export function NishaanStorefront() {
                 <p className="product-price-note">Ask us for the price</p>
                 <p className="product-detail-explanation">Send this design to Nishaan on WhatsApp and ask about current availability and price.</p>
                 <div className="quantity-row"><span>Quantity</span><QuantityControl quantity={detailQuantity} label={selectedDesign.name} onDecrease={() => setDetailQuantity((value) => Math.max(1, value - 1))} onIncrease={() => setDetailQuantity((value) => value + 1)} /></div>
-                <Button asChild variant="default" size="lg" className="detail-order-button"><a href={createWhatsAppOrderUrl([{ design: selectedDesign, quantity: detailQuantity }])} target="_blank" rel="noreferrer"><MessageCircle aria-hidden="true" /> Ask about this design</a></Button>
+                <Button asChild variant="default" size="lg" className="detail-order-button"><a href={createWhatsAppOrderUrl([{ design: selectedDesign, quantity: detailQuantity }])} target="_blank" rel="noreferrer"><MessageCircle aria-hidden="true" /> Order now</a></Button>
                 <Button variant="outline" size="lg" className="detail-add-button" onClick={() => { addToCart(selectedDesign, detailQuantity); setSelectedDesign(null); }}><ShoppingBag aria-hidden="true" /> Add to bag</Button>
                 <p className="product-detail-footnote"><Check aria-hidden="true" /> Price and availability confirmed in chat</p>
               </div>
@@ -309,7 +309,7 @@ export function ContentPage({ kind }: { kind: "about" | "faq" | "contact" }) {
 
   return (
     <div className="content-page-shell">
-      <SiteHeader cartCount={0} onOpenCart={() => undefined} />
+      <SiteHeader cartCount={0} />
       <main className="content-page-main">
         <Link to="/" className="back-link"><ArrowLeft aria-hidden="true" /> Back to Nishaan</Link>
         <p className="eyebrow"><span className="eyebrow-dot" /> {pageKicker}</p>
