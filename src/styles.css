@@ -260,7 +260,7 @@
 .product-detail-footnote { display: flex; align-items: center; gap: 7px; margin: 18px 0 0; color: var(--muted-foreground); font-size: 10px; }
 .product-detail-footnote svg { width: 13px; color: var(--brand-yellow); }
 
-.cart-dialog { position: fixed; inset-block: 0; right: 0; left: auto; display: flex; flex-direction: column; width: min(490px,100vw); height: 100dvh; max-width: 490px; max-height: 100dvh; translate: 0 0; transform: none; gap: 0; padding: 0; overflow: hidden; border-block: 0; border-right: 0; border-radius: 0; background: var(--surface-elevated); animation: cart-enter 220ms ease-out; }
+.cart-dialog { position: fixed; inset: 0 0 0 auto; display: flex; flex-direction: column; width: min(490px,100vw); height: 100dvh; max-width: 490px; max-height: 100dvh; margin: 0; translate: 0 0; transform: none; gap: 0; padding: 0; overflow: hidden; border-block: 0; border-right: 0; border-radius: 0; background: var(--surface-elevated); animation: cart-enter 220ms ease-out; }
 .cart-dialog[data-state="closed"] { animation: cart-exit 180ms ease-in; }
 .cart-dialog-header { padding: 30px 26px 20px; border-bottom: 1px solid var(--brand-line); }
 .cart-dialog-header h2 { display: flex; justify-content: space-between; align-items: center; font-size: 28px; }
@@ -304,8 +304,8 @@
 .faq-item[open] summary svg { transform: rotate(45deg); }
 .faq-item > p { max-width: 700px; margin: -2px 0 24px; padding-right: 35px; color: var(--brand-ash); font-size: 13px; line-height: 1.8; }
 
-@keyframes cart-enter { from { opacity: 0.6; transform: translateX(35px); } to { opacity: 1; transform: translateX(0); } }
-@keyframes cart-exit { from { opacity: 1; transform: translateX(0); } to { opacity: 0.6; transform: translateX(35px); } }
+@keyframes cart-enter { from { opacity: 0.6; } to { opacity: 1; } }
+@keyframes cart-exit { from { opacity: 1; } to { opacity: 0.6; } }
 
 @media (max-width: 1080px) {
   .content-shell, .header-main { width: calc(100% - 72px); }
