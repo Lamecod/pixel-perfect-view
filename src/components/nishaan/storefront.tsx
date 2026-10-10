@@ -5,6 +5,7 @@ import { ArrowDown, ArrowLeft, ArrowRight, Check, Instagram, MessageCircle, Minu
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { designCategories, tattooDesigns, type TattooDesign } from "@/lib/nishaan-catalog";
 import { createWhatsAppOrderUrl, type WhatsAppOrderLine } from "@/lib/whatsapp-order";
 
@@ -42,7 +43,7 @@ function QuantityControl({
   );
 }
 
-function SiteHeader({ cartCount, onOpenCart }: { cartCount: number; onOpenCart: () => void }) {
+function SiteHeader({ cartCount, onOpenCart }: { cartCount: number; onOpenCart?: () => void }) {
   return (
     <>
       <div className="announcement-bar">
@@ -58,19 +59,19 @@ function SiteHeader({ cartCount, onOpenCart }: { cartCount: number; onOpenCart: 
             <small>WEAR WHAT MATTERS.</small>
           </Link>
           <nav className="desktop-nav" aria-label="Main navigation">
-            <Link to="/#shop">Shop</Link>
+            <Link to="/" hash="shop">Shop</Link>
             <Link to="/about">The story</Link>
             <Link to="/faq">Questions</Link>
             <Link to="/contact">Contact</Link>
           </nav>
-          <Button variant="outline" size="sm" className="cart-trigger" onClick={onOpenCart} aria-label={`Open your bag, ${cartCount} items`}>
+          {onOpenCart && <Button variant="outline" size="sm" className="cart-trigger" onClick={onOpenCart} aria-label={`Open your bag, ${cartCount} items`}>
             <ShoppingBag aria-hidden="true" />
             <span className="cart-label">Bag</span>
             <span className="cart-count" aria-live="polite">{cartCount}</span>
-          </Button>
+          </Button>}
         </div>
         <nav className="mobile-nav" aria-label="Mobile navigation">
-          <Link to="/#shop">Shop</Link>
+          <Link to="/" hash="shop">Shop</Link>
           <Link to="/about">Story</Link>
           <Link to="/faq">FAQ</Link>
           <Link to="/contact">Contact</Link>
@@ -281,7 +282,7 @@ export function NishaanStorefront() {
                 <p className="product-price-note">Ask us for the price</p>
                 <p className="product-detail-explanation">Send this design to Nishaan on WhatsApp and ask about current availability and price.</p>
                 <div className="quantity-row"><span>Quantity</span><QuantityControl quantity={detailQuantity} label={selectedDesign.name} onDecrease={() => setDetailQuantity((value) => Math.max(1, value - 1))} onIncrease={() => setDetailQuantity((value) => value + 1)} /></div>
-                <Button asChild variant="default" size="lg" className="detail-order-button"><a href={createWhatsAppOrderUrl([{ design: selectedDesign, quantity: detailQuantity }])} target="_blank" rel="noreferrer"><MessageCircle aria-hidden="true" /> Ask about this design</a></Button>
+                <Button asChild variant="default" size="lg" className="detail-order-button"><a href={createWhatsAppOrderUrl([{ design: selectedDesign, quantity: detailQuantity }])} target="_blank" rel="noreferrer"><MessageCircle aria-hidden="true" /> Order now</a></Button>
                 <Button variant="outline" size="lg" className="detail-add-button" onClick={() => { addToCart(selectedDesign, detailQuantity); setSelectedDesign(null); }}><ShoppingBag aria-hidden="true" /> Add to bag</Button>
                 <p className="product-detail-footnote"><Check aria-hidden="true" /> Price and availability confirmed in chat</p>
               </div>
@@ -290,15 +291,15 @@ export function NishaanStorefront() {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={cartOpen} onOpenChange={setCartOpen}>
-        <DialogContent className="cart-dialog">
-          <DialogHeader className="cart-dialog-header"><DialogTitle>Your bag<span>{cartCount}</span></DialogTitle><DialogDescription>Your picks are kept here while you browse.</DialogDescription></DialogHeader>
+      <Sheet open={cartOpen} onOpenChange={setCartOpen}>
+        <SheetContent side="right" className="cart-dialog">
+          <SheetHeader className="cart-dialog-header"><SheetTitle>Your bag<span>{cartCount}</span></SheetTitle><SheetDescription>Your picks are kept here while you browse.</SheetDescription></SheetHeader>
           {orderLines.length > 0 ? <>
             <div className="cart-items">{orderLines.map(({ design, quantity }) => <article className="cart-item" key={design.id}><button className="cart-item-art" onClick={() => { setCartOpen(false); showDetails(design); }} aria-label={`View ${design.name}`}><img src={design.image} alt="" /></button><div className="cart-item-copy"><button className="cart-item-name" onClick={() => { setCartOpen(false); showDetails(design); }}>{design.name}</button><span>Ask us for the price</span><QuantityControl quantity={quantity} label={design.name} onDecrease={() => setDesignQuantity(design.id, quantity - 1)} onIncrease={() => setDesignQuantity(design.id, quantity + 1)} /></div><Button variant="ghost" size="icon" className="cart-remove" aria-label={`Remove ${design.name} from bag`} onClick={() => setDesignQuantity(design.id, 0)}><X aria-hidden="true" /></Button></article>)}</div>
             <div className="cart-summary"><span>Price confirmed by Nishaan on WhatsApp</span><p>Send your picks to ask about availability and price.</p><Button asChild variant="default" size="lg"><a href={createWhatsAppOrderUrl(orderLines)} target="_blank" rel="noreferrer"><MessageCircle aria-hidden="true" /> Ask about these designs</a></Button></div>
           </> : <div className="empty-bag"><div className="empty-bag-icon"><ShoppingBag aria-hidden="true" /></div><p className="eyebrow">YOUR BAG IS WAITING</p><h3>A design could go here.</h3><p>Browse the collection and add the ones that feel like yours.</p><Button variant="outline" onClick={() => { setCartOpen(false); document.querySelector("#shop")?.scrollIntoView({ behavior: "smooth" }); }}>Explore the collection <ArrowDown aria-hidden="true" /></Button></div>}
-        </DialogContent>
-      </Dialog>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
@@ -309,7 +310,7 @@ export function ContentPage({ kind }: { kind: "about" | "faq" | "contact" }) {
 
   return (
     <div className="content-page-shell">
-      <SiteHeader cartCount={0} onOpenCart={() => undefined} />
+      <SiteHeader cartCount={0} />
       <main className="content-page-main">
         <Link to="/" className="back-link"><ArrowLeft aria-hidden="true" /> Back to Nishaan</Link>
         <p className="eyebrow"><span className="eyebrow-dot" /> {pageKicker}</p>
