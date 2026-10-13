@@ -1,2 +1,4 @@
-- [ ] Finish the Nishaan storefront review, verify WhatsApp ordering, mobile layout, and route metadata, then check current build diagnostics.
-- [ ] Rename the single-design WhatsApp action to “Order now” in the product detail view.
+- [x] Rename the single-design WhatsApp action to “Order now” and verify the order flow.
+- [x] Verify the Nishaan storefront’s catalog, search, filters, WhatsApp cart, responsive layout, route metadata, and current build.
+- [x] Check the hosted URLs for all 19 tattoo designs; every image returned successfully.
+- [ ] Verify images against the published storefront; blocked because this project currently has no published URL. Recheck when the published address is available.
